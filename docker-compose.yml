@@ -1,0 +1,28 @@
+services:
+  backend:
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: ./django_api/api.Dockerfile
+    env_file:
+      - ./django_api/.env
+      - .env
+    volumes:
+      - ./django_api:/backend
+      - /backend/.venv
+    ports:
+      - 8000:8000
+  db:
+    image: postgres
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_HOST: ${DB_HOST}
+    ports:
+      - 5432:5432
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
