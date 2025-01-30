@@ -10,7 +10,6 @@ services:
       - .env
     volumes:
       - ./django_api:/backend
-      - /backend/.venv
     ports:
       - 8000:8000
   db:

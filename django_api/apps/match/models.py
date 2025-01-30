@@ -1,19 +1,7 @@
 from django.db import models
 
-
-class Player(models.Model):
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    email = models.EmailField(null=True)
-
-
-class Tournament(models.Model):
-    name = models.CharField(max_length=200)
-    start_date = models.DateField()
-    end_date = models.DateField()
-    location = models.CharField(max_length=200)
-    category = models.CharField(max_length=50)
-    players = models.ManyToManyField(Player)
+from apps.player.models import Player
+from apps.tournament.models import Tournament
 
 
 class Match(models.Model):

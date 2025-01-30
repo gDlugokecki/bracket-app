@@ -1,10 +1,14 @@
 include .env
 
-build:
+build-clean:
 	docker compose build --no-cache
+build:
+	docker compose build
 run:
 	docker compose up
 migrations:
-	cd django_api && poetry run python manage.py makemigrations
-run-migration:
-	cd django_api && poetry run python manage.py makemigrations && cd .. && $(MAKE) build && $(MAKE) run
+	docker compose run backend poetry run python manage.py makemigrations
+run-migrate:
+	docker compose run backend poetry run python manage.py migrate
+root-shell:
+	docker compose run --user 0 backend /bin/bash

@@ -1,37 +1,46 @@
 FROM python:3.12-slim
 
-RUN pip install poetry
+RUN groupadd mygroup -g 1000 && \
+    useradd myuser -u 1000 -g 1000 -m -s /bin/bash
 
-WORKDIR /backend
+RUN mkdir /opt/poetry
 
 ENV POETRY_NO_INTERACTION=1 \
     POETRY_VIRTUALENVS_IN_PROJECT=1 \
     POETRY_VIRTUALENVS_CREATE=1 \
-    POETRY_CACHE_DIR=/tmp/poetry_cache
-ENV PATH="$PATH:$POETRY_HOME/bin"
+    POETRY_CACHE_DIR=/tmp/poetry_cache \
+    POETRY_HOME=/opt/poetry
 
-ENV DJANGO_SUPERUSER_USERNAME=admin
-ENV DJANGO_SUPERUSER_EMAIL=admin@example.com
-ENV DJANGO_SUPERUSER_PASSWORD=your_password
+ENV PATH="$POETRY_HOME/bin:${PATH}"
 
-COPY ./django_api/pyproject.toml ./django_api/poetry.lock ./
-COPY ./django_api/api/migrations ./migrations
-COPY ./django_api/entrypoint.sh ./
+RUN apt -y update && apt -y install curl
+RUN curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.8.5 python3 -
 
-RUN groupadd mygroup -g 1000
-RUN useradd myuser -u 1000 -g 1000 -m -s /bin/bash
+WORKDIR /backend
 
-RUN poetry install
+# Set ownership of the working directory
+RUN chown myuser:mygroup /backend
 
-COPY ./django_api/manage.py ./
-COPY ./django_api/api ./api
-COPY ./django_api/core ./core
+COPY --chown=myuser:mygroup ./django_api/pyproject.toml ./django_api/poetry.lock ./
+COPY --chown=myuser:mygroup ./django_api/entrypoint.sh ./
 
+# Install dependencies as root (required for system-level installations)
+
+RUN poetry install & \
+    # Ensure poetry cache is removed to reduce image size
+    rm -rf $POETRY_CACHE_DIR & \
+    chown -R myuser:mygroup .venv
+
+# Copy application files with correct ownership
+COPY --chown=myuser:mygroup ./django_api/manage.py ./
+COPY --chown=myuser:mygroup ./django_api/apps ./apps
+COPY --chown=myuser:mygroup ./django_api/core ./core
+
+# # Ensure entrypoint is executable
 RUN chmod +x entrypoint.sh
 
-# RUN poetry run python manage.py createsuperuser --noinput \
-#     --username $DJANGO_SUPERUSER_USERNAME \
-#     --email $DJANGO_SUPERUSER_EMAIL
-# CMD ["poetry", "run", "python", "manage.py", "migrate", "&&", "runserver", "0.0.0.0:8000"]
+# # Switch to non-root user
+USER myuser
+
 CMD ["./entrypoint.sh"]
 # CMD sleep infinity
