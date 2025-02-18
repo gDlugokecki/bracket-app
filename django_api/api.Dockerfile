@@ -18,18 +18,17 @@ RUN curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.8.5 python3 -
 
 WORKDIR /backend
 
-# Set ownership of the working directory
-RUN chown myuser:mygroup /backend
+
 
 COPY --chown=myuser:mygroup ./django_api/pyproject.toml ./django_api/poetry.lock ./
 COPY --chown=myuser:mygroup ./django_api/entrypoint.sh ./
 
 # Install dependencies as root (required for system-level installations)
+RUN poetry install
+RUN rm -rf $POETRY_CACHE_DIR
 
-RUN poetry install & \
-    # Ensure poetry cache is removed to reduce image size
-    rm -rf $POETRY_CACHE_DIR & \
-    chown -R myuser:mygroup .venv
+# Set ownership of the working directory
+RUN chown myuser:mygroup /backend
 
 # Copy application files with correct ownership
 COPY --chown=myuser:mygroup ./django_api/manage.py ./

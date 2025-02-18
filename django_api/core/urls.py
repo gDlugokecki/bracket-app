@@ -18,7 +18,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from ninja import Redoc
-
+from apps.match.api import match_router
+from apps.player.api import player_router
+from apps.tournament.api import tournament_router
+from apps.authentication.api import auth_router
 from ninja import NinjaAPI
 
 api = NinjaAPI(docs=Redoc())
@@ -28,6 +31,11 @@ api = NinjaAPI(docs=Redoc())
 def hello(request):
     return "hello world"
 
+
+api.add_router("/match/", match_router)
+api.add_router("/player/", player_router)
+api.add_router("/tournament/", tournament_router)
+api.add_router("/auth/", auth_router)
 
 urlpatterns = [
     path("admin/", admin.site.urls),

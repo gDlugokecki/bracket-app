@@ -1,0 +1,19 @@
+{
+  "name": "Django API Development",
+  "dockerComposeFile": "../compose.yml",
+  "service": "backend",
+  "workspaceFolder": "/backend",
+  "overrideCommand": false, // Add this to prevent override of container's command
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.black-formatter",
+        "bradlc.vscode-tailwindcss"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/backend/.venv/bin/python"
+      }
+    }
+  }
+}

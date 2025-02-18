@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 
 from apps.player.models import Player
@@ -5,21 +6,50 @@ from apps.tournament.models import Tournament
 
 
 class Match(models.Model):
-    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
-    player_1 = models.ForeignKey(
-        Player, related_name="matches_as_player1", on_delete=models.CASCADE
+    tournament = models.ForeignKey(
+        Tournament, on_delete=models.CASCADE, related_name="matches"
     )
-    player_2 = models.ForeignKey(
-        Player, related_name="matches_as_player2", on_delete=models.CASCADE
+    # For singles matches
+    player1 = models.ForeignKey(
+        Player, on_delete=models.CASCADE, related_name="matches_as_player1"
     )
+    player2 = models.ForeignKey(
+        Player, on_delete=models.CASCADE, related_name="matches_as_player2"
+    )
+
+    MATCH_STATUS_CHOICES = [
+        ("SCHEDULED", "Scheduled"),
+        ("IN_PROGRESS", "In Progress"),
+        ("COMPLETED", "Completed"),
+        ("CANCELLED", "Cancelled"),
+    ]
+    status = models.CharField(
+        max_length=20, choices=MATCH_STATUS_CHOICES, default="SCHEDULED"
+    )
+
+    scheduled_time = models.DateTimeField()
+    court_number = models.CharField(max_length=10, blank=True)
+    round_number = models.IntegerField(null=True)
+
     winner = models.ForeignKey(
-        Player, related_name="matches_won", on_delete=models.CASCADE
+        Player,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="matches_won",
     )
-    score = models.ForeignKey(
-        Player, related_name="match_wins", on_delete=models.CASCADE
-    )
-    date = models.DateTimeField()
-    round = models.CharField(max_length=50)
+
+    score = models.CharField(max_length=100, blank=True)
+    duration = models.DurationField(null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = "matches"
+
+    def __str__(self):
+        return f"{self.player1} vs {self.player2} - {self.tournament.name}"
 
 
 class Set(models.Model):

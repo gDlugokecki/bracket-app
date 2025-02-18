@@ -1,0 +1,16 @@
+{
+  "python.analysis.packageIndexDepths": [
+    { "name": "", "depth": 8, "includeAllSymbols": true }
+  ],
+  "tailwindCSS.includeLanguages": {
+    "vue": "html",
+    "vue-html": "html"
+  },
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "tailwindCSS.experimental.configFile": "./ui/src/assets/base.css"
+}

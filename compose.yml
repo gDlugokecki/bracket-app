@@ -10,8 +10,19 @@ services:
       - .env
     volumes:
       - ./django_api:/backend
+      - venv_data:/backend/.venv
     ports:
       - 8000:8000
+  ui:
+    depends_on:
+      - backend
+    build:
+      context: ui
+      dockerfile: ./dev.Dockerfile
+    volumes:
+      - ./ui:/app
+    ports:
+      - 5173:5173
   db:
     image: postgres
     env_file:
@@ -25,3 +36,5 @@ services:
       - 5432:5432
     volumes:
       - ./db-data:/var/lib/postgresql/data
+volumes:
+  venv_data:
