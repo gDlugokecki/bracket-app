@@ -1,4 +1,4 @@
-from ninja import Router
+from core.utility.MyRouter import MyRouter as Router
 from typing import List
 from .schemas import TournamentListSchema, TournamentSchema
 from .models import Tournament

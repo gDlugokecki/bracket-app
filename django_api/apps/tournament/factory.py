@@ -12,8 +12,8 @@ class TournamentFactory(DjangoModelFactory):
         model = Tournament
 
     name = factory.Faker("name")
-    start_date = factory.Faker("future_date")
-    end_date = factory.Faker("date_time")
+    start_date = factory.Faker("date_time")
+    end_date = factory.Faker("future_date")
     location = factory.Faker("city")
     category = factory.fuzzy.FuzzyChoice(categories)
 

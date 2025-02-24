@@ -1,4 +1,4 @@
-from ninja import Router
+from core.utility.MyRouter import MyRouter as Router
 from ninja.responses import codes_2xx
 from .commands import create_user, login_user
 
@@ -9,6 +9,7 @@ from .schemas import (
     LoginSchema,
     TokenPairSchema,
 )
+
 
 auth_router = Router(tags=["auth"])
 

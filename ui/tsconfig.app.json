@@ -8,5 +8,9 @@
     "paths": {
       "@/*": ["./src/*"]
     }
+  },
+  "vueCompilerOptions": {
+    "fallthroughAttributes": true,
+    "strictTemplates": true
   }
 }

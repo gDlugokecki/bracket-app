@@ -1,5 +1,4 @@
-from ninja import Router
-
+from core.utility.MyRouter import MyRouter as Router
 
 match_router = Router(tags=["match"])
 

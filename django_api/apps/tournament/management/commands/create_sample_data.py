@@ -39,40 +39,32 @@ class Command(BaseCommand):
             winners.append(match.winner)
         return winners
 
-    # def handle(self, *args, **kwargs):
-    #     players = PlayerFactory.create_batch(10)
-    #     self.stdout.write(f"Created {len(players)} players")
-
-    #     tournament = TournamentFactory(players=players[:5])
-    #     self.stdout.write(f"Created tournament: {tournament.name}")
     def handle(self, *args, **kwargs):
         # Create players and tournament
         players = PlayerFactory.create_batch(32)
         tournament = TournamentFactory(players=players)
 
-        self.stdout.write(
-            f"Created tournament: {tournament.name} with {len(players)} players"
-        )
+        print(f"Created tournament: {tournament.name} with {len(players)} players")
 
         # Round of 32
         round_32_winners = self.create_round_matches(tournament, players, 1)
-        self.stdout.write("Created Round of 32 matches")
+        print("Created Round of 32 matches")
 
         # Round of 16
         round_16_winners = self.create_round_matches(tournament, round_32_winners, 2)
-        self.stdout.write("Created Round of 16 matches")
+        print("Created Round of 16 matches")
 
         # Quarter-finals
         quarter_winners = self.create_round_matches(tournament, round_16_winners, 3)
-        self.stdout.write("Created Quarter-final matches")
+        print("Created Quarter-final matches")
 
         # Semi-finals
         semi_winners = self.create_round_matches(tournament, quarter_winners, 4)
-        self.stdout.write("Created Semi-final matches")
+        print("Created Semi-final matches")
 
         # Final
         final = self.create_match_with_details(
             tournament, semi_winners[0], semi_winners[1], 5
         )
-        self.stdout.write(f"Created Final match: {final.player1} vs {final.player2}")
-        self.stdout.write(f"Tournament winner: {final.winner}")
+        print(f"Created Final match: {final.player1} vs {final.player2}")
+        print(f"Tournament winner: {final.winner}")
