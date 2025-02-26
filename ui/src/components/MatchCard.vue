@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import Card from 'primevue/card'
 
-import type { Player } from '@/types/api/models/Player'
 import { useDateFormat } from '@vueuse/core'
+
+import type { Player } from '@/types/api/models/Player'
 
 defineProps<{
   player1: Player
@@ -11,6 +12,7 @@ defineProps<{
   score: string
   scheduledTime: string
   winnerId: number
+  isTopCard: boolean
 }>()
 
 const getFullName = (player: Player) => {
