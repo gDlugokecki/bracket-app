@@ -1,50 +1,41 @@
 <script setup lang="ts">
-import ProgressSpinner from 'primevue/progressspinner'
+import type { MatchResponse } from '@/api/generated/bracketAppAPI.schemas'
+import { useGetMatchListMatchesGet } from '@/api/generated/matches/matches'
+import { useGetTournament } from '@/api/generated/tournaments/tournaments'
+import MatchCard from '@/components-old/MatchCard.vue'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
-import { useFetch } from '@vueuse/core'
-
-import MatchCard from '@/components/MatchCard.vue'
-
-import type { Match } from '@/types/api/models/Match'
-import type { MatchResponse } from '@/types/api/responses/MatchResponse'
-import type { TournamentResponse } from '@/types/api/responses/TournamentResponse'
-
-const apiUrl = import.meta.env.VITE_API_URL
 const route = useRoute()
-const tournamentId = route.params.id
+const tournamentId = Number(route.params.id)
 
 const {
   data: tournamentDetails,
   error: _tournamentDetailsError,
-  isFetching: isTournamentDetailsFetching,
-} = useFetch(apiUrl + `/tournament/${tournamentId}`)
-  .get()
-  .json<TournamentResponse>()
+  isPending: isTournamentDetailsFetching,
+} = useGetTournament(tournamentId)
 
 const {
   data: matches,
   error: _error,
-  isFetching: isMatchesFetching,
-} = useFetch(apiUrl + `/tournament/${tournamentId}/matches`)
-  .get()
-  .json<MatchResponse[]>()
+  isPending: isMatchesFetching,
+} = useGetMatchListMatchesGet({ tournament_id: tournamentId })
 
 const matchesPerRound = computed(() => {
-  if (!matches.value) {
+  if (!matches.value || matches.value.length === 0) {
     return {}
   }
 
   return matches.value.reduce(
     (acc, curr) => {
-      if (!acc[curr.roundNumber]) {
-        acc[curr.roundNumber] = []
+      const roundNum = curr.round_number || 0
+      if (!acc[roundNum]) {
+        acc[roundNum] = []
       }
-      acc[curr.roundNumber].push(curr)
+      acc[roundNum].push(curr)
       return acc
     },
-    {} as Record<number, Match[]>,
+    {} as Record<number, MatchResponse[]>,
   )
 })
 
@@ -102,17 +93,18 @@ const bracketConnectorClasses = (
           class="relative grid items-center"
         >
           <MatchCard
-            :player1="match.player1"
-            :player2="match.player2"
-            :round-number="match.roundNumber"
-            :scheduled-time="match.scheduledTime"
+            :team1-players="match.team1_players || []"
+            :team2-players="match.team2_players || []"
+            :team1-id="match.team1_id"
+            :team2-id="match.team2_id"
+            :winner-team-id="match.winner_team_id"
+            :round-number="match.round_number"
+            :scheduled-time="match.scheduled_time"
             :score="match.score"
-            :winnerId="match.winnerId"
             :is-top-card="index % 2 === 0"
           />
         </div>
       </div>
     </div>
   </div>
-  <ProgressSpinner v-if="isMatchesFetching || isTournamentDetailsFetching" />
 </template>

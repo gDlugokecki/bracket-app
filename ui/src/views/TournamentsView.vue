@@ -1,20 +1,11 @@
 <script setup lang="ts">
-import { useFetch } from '@vueuse/core'
+import { useListTournaments } from '@/api/generated/tournaments/tournaments'
+import Spinner from '@/components-old/Spinner.vue'
+import TournamentPreviewCard from '@/components-old/TournamentPreviewCard.vue'
 
-import Spinner from '@/components/Spinner.vue'
-import TournamentPreviewCard from '@/components/TournamentPreviewCard.vue'
+import TournamentForm from './tournaments/TournamentForm.vue'
 
-import type { TournamentResponse } from '@/types/api/responses/TournamentResponse'
-
-const apiUrl = import.meta.env.VITE_API_URL
-
-const {
-  data: tournaments,
-  error,
-  isFetching,
-} = useFetch(apiUrl + '/tournament')
-  .get()
-  .json<TournamentResponse[]>()
+const { data: tournaments, error, isPending: isFetching } = useListTournaments()
 </script>
 
 <template>
@@ -22,14 +13,16 @@ const {
 
   <div v-if="error">Error: {{ error }}</div>
 
-  <h2 class="text-3xl font-bold underline text-black dark:text-white">Tournaments</h2>
+  <h2 class="text-3xl font-bold text-black underline dark:text-white">Tournaments</h2>
 
   <TournamentPreviewCard
     v-for="tournament in tournaments"
+    :key="tournament.id"
     :id="tournament.id"
     :category="tournament.category"
     :endDate="tournament.endDate"
     :startDate="tournament.startDate"
     :name="tournament.name"
   />
+  <TournamentForm />
 </template>

@@ -7,7 +7,7 @@ build:
 down:
 	docker compose down
 run:
-	docker compose up
+	docker compose up --build --watch
 migrations:
 	docker compose run backend poetry run python manage.py makemigrations
 run-migrate:

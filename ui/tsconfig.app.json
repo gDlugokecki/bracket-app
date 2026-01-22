@@ -4,6 +4,8 @@
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "ES2020",
+    "module": "ESNext",
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
@@ -11,6 +13,6 @@
   },
   "vueCompilerOptions": {
     "fallthroughAttributes": true,
-    "strictTemplates": true
+    "strictTemplates": false
   }
 }

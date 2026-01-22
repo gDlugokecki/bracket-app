@@ -27,6 +27,12 @@ export default [
           argsIgnorePattern: '^_',
         },
       ],
+      'vue/multi-word-component-names': [
+        'error',
+        {
+          ignores: ['Field', 'Input', 'Label', 'Button', 'Textarea', 'Typography'], // shadcn-vue components
+        },
+      ],
     },
   },
 ]

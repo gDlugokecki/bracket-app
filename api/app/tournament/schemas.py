@@ -1,8 +1,9 @@
-from pydantic import BaseModel, ConfigDict
 from datetime import date
 
+from app.schemas import CamelCaseModel
 
-class TournamentCreate(BaseModel):
+
+class TournamentCreate(CamelCaseModel):
     name: str
     start_date: date
     end_date: date
@@ -11,7 +12,7 @@ class TournamentCreate(BaseModel):
     player_ids: list[int] = []
 
 
-class TournamentUpdate(BaseModel):
+class TournamentUpdate(CamelCaseModel):
     name: str | None = None
     start_date: date | None = None
     end_date: date | None = None
@@ -19,8 +20,7 @@ class TournamentUpdate(BaseModel):
     category: str | None = None
 
 
-class TournamentResponse(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+class TournamentResponse(CamelCaseModel):
 
     id: int
     name: str

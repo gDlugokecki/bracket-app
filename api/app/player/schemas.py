@@ -1,20 +1,18 @@
-from pydantic import BaseModel, ConfigDict
+from app.schemas import CamelCaseModel
 
 
-class PlayerCreate(BaseModel):
+class PlayerCreate(CamelCaseModel):
     "Player create"
 
     user_id: int
     rating: int = 1000
 
 
-class PlayerUpdate(BaseModel):
+class PlayerUpdate(CamelCaseModel):
     rating: int
 
 
-class PlayerResponse(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
+class PlayerResponse(CamelCaseModel):
     id: int
     user_id: int
     rating: int

@@ -12,5 +12,12 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
+    preserveSymlinks: true,
+  },
+  build: {
+    target: 'es2020',
+  },
+  server: {
+    host: '0.0.0.0',
   },
 })

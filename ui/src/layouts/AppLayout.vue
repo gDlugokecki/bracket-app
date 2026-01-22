@@ -1,13 +1,14 @@
-<template>
-  <div class="w-full">
-    <component :is="this.$route.meta.layoutComponent">
-      <slot />
-    </component>
-  </div>
-</template>
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 
-<script>
-export default {
-  name: 'AppContainerLayout',
-}
+const route = useRoute()
+
+const layoutComponent = computed(() => route.meta.layoutComponent)
 </script>
+
+<template>
+  <component :is="layoutComponent">
+    <slot />
+  </component>
+</template>

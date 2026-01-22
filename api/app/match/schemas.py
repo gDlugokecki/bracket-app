@@ -1,12 +1,14 @@
 from datetime import datetime, timedelta
 from typing import Any
-from pydantic import BaseModel, ConfigDict, field_validator, model_validator
+
+from pydantic import field_validator, model_validator
 
 from app.match.models import MatchStatus
 from app.player.schemas import PlayerResponse
+from app.schemas import CamelCaseModel
 
 
-class MatchCreate(BaseModel):
+class MatchCreate(CamelCaseModel):
     tournament_id: int
     is_double: bool
     team1_player_ids: list[int]
@@ -22,9 +24,7 @@ class MatchCreate(BaseModel):
         return value
 
 
-class MatchResponse(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
+class MatchResponse(CamelCaseModel):
     id: int
     tournament_id: int
     team1_id: int
@@ -58,7 +58,7 @@ class MatchResponse(BaseModel):
         return data
 
 
-class MatchUpdate(BaseModel):
+class MatchUpdate(CamelCaseModel):
     status: MatchStatus | None = None
     winner_team_id: int | None = None
     score: str | None = None

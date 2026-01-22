@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import AppContainerLayout from '@/layouts/AppLayout.vue'
 import { RouterView } from 'vue-router'
+import 'vue-sonner/style.css'
+
+import { Toaster } from '@/components/ui/sonner'
+import AppLayout from './layouts/AppLayout.vue'
 </script>
 
 <template>
-  <AppContainerLayout>
+  <AppLayout>
     <RouterView />
-  </AppContainerLayout>
+  </AppLayout>
+  <Toaster />
 </template>

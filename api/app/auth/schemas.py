@@ -1,8 +1,11 @@
-from pydantic import BaseModel, ConfigDict, EmailStr
 from datetime import datetime
 
+from pydantic import EmailStr
 
-class UserCreate(BaseModel):
+from app.schemas import CamelCaseModel
+
+
+class UserCreate(CamelCaseModel):
     """User create"""
 
     email: EmailStr
@@ -11,16 +14,14 @@ class UserCreate(BaseModel):
     last_name: str
 
 
-class UserLogin(BaseModel):
+class UserLogin(CamelCaseModel):
     """User login"""
 
     email: EmailStr
     password: str
 
 
-class UserResponse(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
+class UserResponse(CamelCaseModel):
     id: int
     email: str
     first_name: str
@@ -29,6 +30,5 @@ class UserResponse(BaseModel):
     date_joined: datetime
 
 
-class Token(BaseModel):
-    access_token: str
-    token_type: str = "bearer"
+class LoginResponse(CamelCaseModel):
+    user: UserResponse

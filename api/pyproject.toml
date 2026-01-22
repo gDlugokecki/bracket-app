@@ -16,6 +16,8 @@ asyncpg = "^0.31.0"
 pwdlib = {extras = ["argon2"], version = "^0.3.0"}
 pyjwt = "^2.10.1"
 pydantic = {extras = ["email"], version = "^2.12.5"}
+sqladmin = "^0.22.0"
+itsdangerous = "^2.2.0"
 
 
 [tool.poetry.group.dev.dependencies]

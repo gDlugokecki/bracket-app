@@ -8,7 +8,7 @@ from app.player.service import create_player, delete_player, get_all_players, ge
 router = APIRouter(prefix="/players", tags=["players"])
 
 
-@router.get("/{player_id}", response_model=PlayerResponse)
+@router.get("/{player_id}", response_model=PlayerResponse, operation_id="getPlayer")
 async def get_player(player_id: int, db: AsyncSession = Depends(get_db)):
     player = await get_player_by_id(db, player_id)
     if not player:
@@ -16,13 +16,13 @@ async def get_player(player_id: int, db: AsyncSession = Depends(get_db)):
     return player
 
 
-@router.get("/", response_model=list[PlayerResponse])
+@router.get("/", response_model=list[PlayerResponse], operation_id="listPlayers")
 async def list_players(skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)):
     players = await get_all_players(db, skip, limit)
     return players
 
 
-@router.patch("/{player_id}", response_model=PlayerResponse)
+@router.patch("/{player_id}", response_model=PlayerResponse, operation_id="updatePlayer")
 async def update_player_endpoint(player_id: int, player_data: PlayerUpdate, db: AsyncSession = Depends(get_db)):
     try:
         updated_player = await update_player(db, player_id, player_data)
@@ -31,7 +31,7 @@ async def update_player_endpoint(player_id: int, player_data: PlayerUpdate, db: 
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@router.delete("/{player_id}", status_code=204)
+@router.delete("/{player_id}", status_code=204, operation_id="deletePlayer")
 async def delete_player_endpoint(player_id: int, db: AsyncSession = Depends(get_db)):
     try:
         await delete_player(db, player_id)
@@ -40,7 +40,7 @@ async def delete_player_endpoint(player_id: int, db: AsyncSession = Depends(get_
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@router.post("/", response_model=PlayerResponse, status_code=201)
+@router.post("/", response_model=PlayerResponse, status_code=201, operation_id="createPlayer")
 async def create_player_endpoint(player_data: PlayerCreate, db: AsyncSession = Depends(get_db)):
     try:
         player = await create_player(db, player_data)

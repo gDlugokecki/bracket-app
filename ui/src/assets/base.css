@@ -1,93 +1,250 @@
 @import 'tailwindcss';
+@import 'tw-animate-css';
 
-@import './primevue/tailwind.css';
-@plugin 'tailwindcss-primeui';
-@plugin "tailwindcss-animate";
+@custom-variant dark (&:is(.dark *));
 
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
-body {
-  @apply bg-white text-black dark:text-white dark:bg-black;
-}
-
-#app {
-  max-width: 1420px;
-  justify-content: center;
-  padding: 2rem;
-  font-weight: normal;
-  margin: 0 auto;
-}
-
-/* Primary and Surface Palettes */
-:root {
-  --p-primary-50: #ecfdf5;
-  --p-primary-100: #d1fae5;
-  --p-primary-200: #a7f3d0;
-  --p-primary-300: #6ee7b7;
-  --p-primary-400: #34d399;
-  --p-primary-500: #10b981;
-  --p-primary-600: #059669;
-  --p-primary-700: #047857;
-  --p-primary-800: #065f46;
-  --p-primary-900: #064e3b;
-  --p-primary-950: #022c22;
-  --p-surface-0: #ffffff;
-  --p-surface-50: #fafafa;
-  --p-surface-100: #f4f4f5;
-  --p-surface-200: #e4e4e7;
-  --p-surface-300: #d4d4d8;
-  --p-surface-400: #a1a1aa;
-  --p-surface-500: #71717a;
-  --p-surface-600: #52525b;
-  --p-surface-700: #3f3f46;
-  --p-surface-800: #27272a;
-  --p-surface-900: #18181b;
-  --p-surface-950: #09090b;
-  --p-content-border-radius: 6px;
-}
-
-/* Light */
-:root {
-  --p-primary-color: var(--p-primary-500);
-  --p-primary-contrast-color: var(--p-surface-0);
-  --p-primary-hover-color: var(--p-primary-600);
-  --p-primary-active-color: var(--p-primary-700);
-  --p-content-border-color: var(--p-surface-200);
-  --p-content-hover-background: var(--p-surface-100);
-  --p-content-hover-color: var(--p-surface-800);
-  --p-highlight-background: var(--p-primary-50);
-  --p-highlight-color: var(--p-primary-700);
-  --p-highlight-focus-background: var(--p-primary-100);
-  --p-highlight-focus-color: var(--p-primary-800);
-  --p-text-color: var(--p-surface-700);
-  --p-text-hover-color: var(--p-surface-800);
-  --p-text-muted-color: var(--p-surface-500);
-  --p-text-hover-muted-color: var(--p-surface-600);
-}
-
-/*
-* Dark Mode
-* Defaults to system, change the selector to match the darkMode in tailwind.config.
-* For example;
-* darkMode: ['selector', '[class*="app-dark"]']
-* should be;
-* :root[class="app-dark"] {
+/* 
+  BRACKET APP COLOR PALETTE
+  =========================
+  A premium sports tournament aesthetic with emerald as the primary accent.
+  
+  CORE COLORS:
+  - Primary (Emerald): #10B981 - Main CTAs, active states, success indicators
+  - Warning (Amber): #F59E0B - Live matches, warnings, pending states
+  - Success (Green): #22C55E - Wins, completed matches, confirmations
+  - Danger (Red): #EF4444 - Losses, errors, destructive actions
+  - Info (Sky): #0EA5E9 - Information, links, neutral highlights
+  
+  TOURNAMENT-SPECIFIC:
+  - Gold (Champion): #EAB308 - 1st place, championships, featured tournaments
+  - Silver (Runner-up): #94A3B8 - 2nd place, secondary highlights
+  - Bronze (Third): #CD7F32 - 3rd place
+  
+  NEUTRALS:
+  - Background shades from near-black to dark gray for depth
+  - High contrast white/off-white text for readability
 */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --p-primary-color: var(--p-primary-400);
-    --p-primary-contrast-color: var(--p-surface-900);
-    --p-primary-hover-color: var(--p-primary-300);
-    --p-primary-active-color: var(--p-primary-200);
-    --p-content-border-color: var(--p-surface-700);
-    --p-content-hover-background: var(--p-surface-800);
-    --p-content-hover-color: var(--p-surface-0);
-    --p-highlight-background: color-mix(in srgb, var(--p-primary-400), transparent 84%);
-    --p-highlight-color: rgba(255, 255, 255, 0.87);
-    --p-highlight-focus-background: color-mix(in srgb, var(--p-primary-400), transparent 76%);
-    --p-highlight-focus-color: rgba(255, 255, 255, 0.87);
-    --p-text-color: var(--p-surface-0);
-    --p-text-hover-color: var(--p-surface-0);
-    --p-text-muted-color: var(--p-surface-400);
-    --p-text-hover-muted-color: var(--p-surface-300);
+
+:root {
+  /* Base backgrounds - deep charcoal with subtle blue undertone */
+  --background: oklch(0.13 0.005 260);
+  --foreground: oklch(0.98 0 0);
+
+  /* Card surfaces - slightly elevated from background */
+  --card: oklch(0.17 0.005 260);
+  --card-foreground: oklch(0.98 0 0);
+
+  /* Popover/Dropdown surfaces */
+  --popover: oklch(0.17 0.005 260);
+  --popover-foreground: oklch(0.98 0 0);
+
+  /* Primary - Emerald Green for main actions */
+  --primary: oklch(0.696 0.17 162.48);
+  --primary-foreground: oklch(0.98 0 0);
+
+  /* Secondary - Subtle dark surface */
+  --secondary: oklch(0.22 0.005 260);
+  --secondary-foreground: oklch(0.98 0 0);
+
+  /* Muted - For disabled/inactive elements */
+  --muted: oklch(0.22 0.005 260);
+  --muted-foreground: oklch(0.55 0 0);
+
+  /* Accent - For hover states and highlights */
+  --accent: oklch(0.25 0.005 260);
+  --accent-foreground: oklch(0.98 0 0);
+
+  /* Destructive - For errors, losses, deletions */
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.98 0 0);
+
+  /* Borders and inputs */
+  --border: oklch(0.28 0.005 260);
+  --input: oklch(0.22 0.005 260);
+  --ring: oklch(0.696 0.17 162.48);
+
+  /* Tournament-specific semantic colors */
+  --success: oklch(0.723 0.191 142.5);
+  --success-foreground: oklch(0.13 0.005 260);
+
+  --warning: oklch(0.769 0.188 70.08);
+  --warning-foreground: oklch(0.13 0.005 260);
+
+  --info: oklch(0.685 0.169 237.32);
+  --info-foreground: oklch(0.98 0 0);
+
+  /* Tournament placement colors */
+  --gold: oklch(0.795 0.184 86.05);
+  --gold-foreground: oklch(0.13 0.005 260);
+
+  --silver: oklch(0.704 0.022 264.05);
+  --silver-foreground: oklch(0.13 0.005 260);
+
+  --bronze: oklch(0.627 0.129 54.77);
+  --bronze-foreground: oklch(0.98 0 0);
+
+  /* Match status colors */
+  --live: oklch(0.577 0.245 27.325);
+  --live-foreground: oklch(0.98 0 0);
+
+  --upcoming: oklch(0.685 0.169 237.32);
+  --upcoming-foreground: oklch(0.98 0 0);
+
+  --completed: oklch(0.55 0 0);
+  --completed-foreground: oklch(0.98 0 0);
+
+  /* Chart colors - coordinated palette */
+  --chart-1: oklch(0.696 0.17 162.48);
+  --chart-2: oklch(0.769 0.188 70.08);
+  --chart-3: oklch(0.685 0.169 237.32);
+  --chart-4: oklch(0.723 0.191 142.5);
+  --chart-5: oklch(0.577 0.245 27.325);
+
+  --radius: 0.625rem;
+
+  /* Sidebar */
+  --sidebar: oklch(0.11 0.005 260);
+  --sidebar-foreground: oklch(0.98 0 0);
+  --sidebar-primary: oklch(0.696 0.17 162.48);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.22 0.005 260);
+  --sidebar-accent-foreground: oklch(0.98 0 0);
+  --sidebar-border: oklch(0.23 0.005 260);
+  --sidebar-ring: oklch(0.696 0.17 162.48);
+}
+
+/* Dark mode is the default, but keeping for compatibility */
+.dark {
+  --background: oklch(0.13 0.005 260);
+  --foreground: oklch(0.98 0 0);
+  --card: oklch(0.17 0.005 260);
+  --card-foreground: oklch(0.98 0 0);
+  --popover: oklch(0.17 0.005 260);
+  --popover-foreground: oklch(0.98 0 0);
+  --primary: oklch(0.696 0.17 162.48);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.22 0.005 260);
+  --secondary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.22 0.005 260);
+  --muted-foreground: oklch(0.55 0 0);
+  --accent: oklch(0.25 0.005 260);
+  --accent-foreground: oklch(0.98 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.28 0.005 260);
+  --input: oklch(0.22 0.005 260);
+  --ring: oklch(0.696 0.17 162.48);
+  --success: oklch(0.723 0.191 142.5);
+  --success-foreground: oklch(0.13 0.005 260);
+  --warning: oklch(0.769 0.188 70.08);
+  --warning-foreground: oklch(0.13 0.005 260);
+  --info: oklch(0.685 0.169 237.32);
+  --info-foreground: oklch(0.98 0 0);
+  --gold: oklch(0.795 0.184 86.05);
+  --gold-foreground: oklch(0.13 0.005 260);
+  --silver: oklch(0.704 0.022 264.05);
+  --silver-foreground: oklch(0.13 0.005 260);
+  --bronze: oklch(0.627 0.129 54.77);
+  --bronze-foreground: oklch(0.98 0 0);
+  --live: oklch(0.577 0.245 27.325);
+  --live-foreground: oklch(0.98 0 0);
+  --upcoming: oklch(0.685 0.169 237.32);
+  --upcoming-foreground: oklch(0.98 0 0);
+  --completed: oklch(0.55 0 0);
+  --completed-foreground: oklch(0.98 0 0);
+  --chart-1: oklch(0.696 0.17 162.48);
+  --chart-2: oklch(0.769 0.188 70.08);
+  --chart-3: oklch(0.685 0.169 237.32);
+  --chart-4: oklch(0.723 0.191 142.5);
+  --chart-5: oklch(0.577 0.245 27.325);
+  --sidebar: oklch(0.11 0.005 260);
+  --sidebar-foreground: oklch(0.98 0 0);
+  --sidebar-primary: oklch(0.696 0.17 162.48);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.22 0.005 260);
+  --sidebar-accent-foreground: oklch(0.98 0 0);
+  --sidebar-border: oklch(0.23 0.005 260);
+  --sidebar-ring: oklch(0.696 0.17 162.48);
+}
+
+@theme inline {
+  --font-sans: 'Nunito Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
+
+  /* Base semantic colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Tournament semantic colors */
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  /* Placement colors */
+  --color-gold: var(--gold);
+  --color-gold-foreground: var(--gold-foreground);
+  --color-silver: var(--silver);
+  --color-silver-foreground: var(--silver-foreground);
+  --color-bronze: var(--bronze);
+  --color-bronze-foreground: var(--bronze-foreground);
+
+  /* Match status colors */
+  --color-live: var(--live);
+  --color-live-foreground: var(--live-foreground);
+  --color-upcoming: var(--upcoming);
+  --color-upcoming-foreground: var(--upcoming-foreground);
+  --color-completed: var(--completed);
+  --color-completed-foreground: var(--completed-foreground);
+
+  /* Charts */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Radius */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Sidebar */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }

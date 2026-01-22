@@ -17,7 +17,7 @@ from app.tournament.service import (
 router = APIRouter(prefix="/tournaments", tags=["tournaments"])
 
 
-@router.get("/{tournament_id}", response_model=TournamentResponse)
+@router.get("/{tournament_id}", response_model=TournamentResponse, operation_id="getTournament")
 async def get_tournament_by_id_endpoint(tournament_id: int, db: AsyncSession = Depends(get_db)):
     tournament = await get_tournament_by_id(db, tournament_id)
 
@@ -26,13 +26,13 @@ async def get_tournament_by_id_endpoint(tournament_id: int, db: AsyncSession = D
     return tournament
 
 
-@router.get("/", response_model=list[TournamentResponse])
+@router.get("/", response_model=list[TournamentResponse], operation_id="listTournaments")
 async def list_tournaments(skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_db)):
     tournaments = await get_all_tournaments(db, skip, limit)
     return tournaments
 
 
-@router.post("/", response_model=TournamentResponse, status_code=201)
+@router.post("/", response_model=TournamentResponse, status_code=201, operation_id="createTournament")
 async def create_tournament_endpoint(tournament_data: TournamentCreate, db: AsyncSession = Depends(get_db)):
     try:
         tournament = await create_tournament(db, tournament_data)
@@ -41,7 +41,7 @@ async def create_tournament_endpoint(tournament_data: TournamentCreate, db: Asyn
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@router.delete("/{tournament_id}", status_code=204)
+@router.delete("/{tournament_id}", status_code=204, operation_id="deleteTournament")
 async def delete_tournament_endpoint(tournament_id: int, db: AsyncSession = Depends(get_db)):
     try:
         await delete_tournament(db, tournament_id)
@@ -50,7 +50,7 @@ async def delete_tournament_endpoint(tournament_id: int, db: AsyncSession = Depe
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@router.delete("/{tournament_id}/players/{player_id}", status_code=204)
+@router.delete("/{tournament_id}/players/{player_id}", status_code=204, operation_id="removePlayerFromTournament")
 async def remove_player_from_tournament_endpoint(
     tournament_id: int, player_id: int, db: AsyncSession = Depends(get_db)
 ):
@@ -61,7 +61,7 @@ async def remove_player_from_tournament_endpoint(
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@router.post("/{tournament_id}/players/{player_id}", response_model=TournamentResponse, status_code=201)
+@router.post("/{tournament_id}/players/{player_id}", response_model=TournamentResponse, status_code=201, operation_id="addPlayerToTournament")
 async def add_player_to_tournament_endpoint(tournament_id: int, player_id: int, db: AsyncSession = Depends(get_db)):
     try:
         return await add_player_to_tournament(db, tournament_id, player_id)
@@ -69,7 +69,7 @@ async def add_player_to_tournament_endpoint(tournament_id: int, player_id: int, 
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@router.patch("/{tournament_id}", response_model=TournamentResponse)
+@router.patch("/{tournament_id}", response_model=TournamentResponse, operation_id="updateTournament")
 async def update_tournament_endpoint(
     tournament_id: int, tournament_data: TournamentUpdate, db: AsyncSession = Depends(get_db)
 ):

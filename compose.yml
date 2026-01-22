@@ -61,7 +61,7 @@ services:
       dockerfile: ./dev.Dockerfile
     volumes:
       - ./ui:/app
-      - node_modules:/app/node_modules
+      - pnpm_store:/app/.pnpm-store  # Docker volume for pnpm store
     ports:
       - 5173:5173
     develop:
@@ -105,4 +105,4 @@ services:
 
 volumes:
   venv_data:
-  node_modules:
+  pnpm_store:

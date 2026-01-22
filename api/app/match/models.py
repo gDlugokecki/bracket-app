@@ -1,9 +1,11 @@
 from datetime import datetime, timedelta, timezone
 from typing import TYPE_CHECKING
-from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app.database import Base
 import enum
+
+from sqlalchemy import DateTime, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.database import Base
 
 
 if TYPE_CHECKING:
@@ -29,16 +31,20 @@ class Match(Base):
 
     status: Mapped[MatchStatus] = mapped_column(default=MatchStatus.SCHEDULED)
 
-    scheduled_time: Mapped[datetime]
+    scheduled_time: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     court_number: Mapped[str | None]
     round_number: Mapped[int | None]
 
     score: Mapped[str | None]
     duration: Mapped[timedelta | None]
 
-    created_at: Mapped[datetime] = mapped_column(default=lambda: datetime.now(timezone.utc))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
+    )
     updated_at: Mapped[datetime] = mapped_column(
-        default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc)
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
     )
 
     team1: Mapped["Team"] = relationship(back_populates="matches_as_team1", foreign_keys=[team1_id])

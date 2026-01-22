@@ -1,0 +1,5 @@
+export { publicRoutes } from './public.routes'
+export { authRoutes } from './auth.routes'
+export { appRoutes } from './app.routes'
+export { tournamentRoutes } from './tournament.routes'
+export { matchRoutes } from './match.routes'
