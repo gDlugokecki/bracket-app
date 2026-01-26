@@ -2,29 +2,25 @@
 import { Field as VeeField } from 'vee-validate'
 
 import { Field, FieldLabel, FieldError, FieldDescription } from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 
 type Props = {
   name: string
   label: string
-  type?: 'text' | 'email' | 'password' | 'number'
   placeholder?: string
   description?: string
 }
 
-withDefaults(defineProps<Props>(), {
-  type: 'text',
-})
+defineProps<Props>()
 </script>
 
 <template>
   <VeeField v-slot="{ field, errors }" :name="name">
     <Field>
       <FieldLabel :for="name">{{ label }}</FieldLabel>
-      <Input
+      <Textarea
         :id="name"
         v-bind="field"
-        :type="type"
         :placeholder="placeholder"
         :aria-invalid="!!errors.length"
       />

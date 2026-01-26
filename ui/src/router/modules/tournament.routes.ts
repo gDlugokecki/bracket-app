@@ -4,19 +4,12 @@ import { ROUTES, ROUTE_NAMES } from '../routes'
 
 export const tournamentRoutes: RouteRecordRaw[] = [
   {
-    path: ROUTES.TOURNAMENTS,
-    name: ROUTE_NAMES.TOURNAMENTS,
-    component: () => import('@/views/TournamentsView.vue'),
+    path: ROUTES.TOURNAMENT_CREATE,
+    name: ROUTE_NAMES.TOURNAMENT_CREATE,
+    component: () => import('@/views/tournaments/form/TournamentForm.vue'),
     meta: {
       requiresAuth: true,
-    },
-  },
-  {
-    path: '/tournaments/:id',
-    name: ROUTE_NAMES.TOURNAMENT_DETAILS,
-    component: () => import('@/views/TournamentDetailsView.vue'),
-    meta: {
-      requiresAuth: true,
+      layout: 'DashboardLayout',
     },
   },
 ]

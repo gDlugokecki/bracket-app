@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import EmailStr
+from pydantic import EmailStr, computed_field
 
 from app.schemas import CamelCaseModel
 
@@ -28,6 +28,12 @@ class UserResponse(CamelCaseModel):
     last_name: str
     is_active: bool
     date_joined: datetime
+    player_id: int | None = None  # from relationship
+
+    @computed_field
+    @property
+    def is_player(self) -> bool:
+        return self.player_id is not None
 
 
 class LoginResponse(CamelCaseModel):

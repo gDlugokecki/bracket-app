@@ -1,6 +1,6 @@
 from datetime import date
 from typing import TYPE_CHECKING
-from sqlalchemy import Column, ForeignKey, String, Table
+from sqlalchemy import Column, ForeignKey, String, Table, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database import Base
 
@@ -25,6 +25,7 @@ class Tournament(Base):
     end_date: Mapped[date]
     location: Mapped[str] = mapped_column(String(200))
     category: Mapped[str] = mapped_column(String(50))
+    description: Mapped[str] = mapped_column(Text, default="")
 
     players: Mapped[list["Player"]] = relationship(secondary=tournament_players, back_populates="tournaments")
     matches: Mapped[list["Match"]] = relationship(back_populates="tournament")

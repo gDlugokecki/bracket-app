@@ -253,7 +253,7 @@ export const logout = (
   
 
 
-export const getLogoutMutationOptions = <TError = unknown,
+export const getLogoutMutationOptions = <TError = HTTPValidationError,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError,void, TContext>, }
 ): UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError,void, TContext> => {
 
@@ -280,12 +280,12 @@ const {mutation: mutationOptions} = options ?
 
     export type LogoutMutationResult = NonNullable<Awaited<ReturnType<typeof logout>>>
     
-    export type LogoutMutationError = unknown
+    export type LogoutMutationError = HTTPValidationError
 
     /**
  * @summary Logout
  */
-export const useLogout = <TError = unknown,
+export const useLogout = <TError = HTTPValidationError,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof logout>>, TError,void, TContext>, }
  , queryClient?: QueryClient): UseMutationReturnType<
         Awaited<ReturnType<typeof logout>>,

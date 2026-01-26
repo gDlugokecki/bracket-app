@@ -160,6 +160,8 @@ export interface UserLogin {
   password: string;
 }
 
+export type UserResponsePlayerId = number | null;
+
 export interface UserResponse {
   id: number;
   email: string;
@@ -167,6 +169,8 @@ export interface UserResponse {
   lastName: string;
   isActive: boolean;
   dateJoined: string;
+  playerId?: UserResponsePlayerId;
+  readonly isPlayer: boolean;
 }
 
 export type ValidationErrorLocItem = string | number;
